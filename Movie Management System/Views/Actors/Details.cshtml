@@ -1,0 +1,103 @@
+@model Movie_Management_System.Models.Actor
+
+@{
+    ViewData["Title"] = "Actor Details";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Actor Details</h2>
+            <p class="text-muted mb-0">
+                View actor information
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-light">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+
+        <div class="card-body p-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-3 text-center">
+
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+                        <img src="@Model.Image"
+                             class="rounded-circle shadow-sm"
+                             style="width:180px;height:180px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center"
+                             style="width:180px;height:180px;">
+                            <span style="font-size:60px;">👤</span>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="col-md-9">
+
+                    <h2 class="fw-bold">
+                        @Model.Name
+                    </h2>
+
+                    <p class="text-muted">
+                        Actor #@Model.Id
+                    </p>
+
+                    <hr />
+
+                    <h5 class="fw-bold mb-3">
+                        Movies
+                    </h5>
+
+                    @if (Model.Movies != null && Model.Movies.Any())
+                    {
+                        <div class="d-flex flex-wrap gap-2">
+
+                            @foreach (var movie in Model.Movies)
+                            {
+                                <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                                    @movie.Name
+                                </span>
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+                            No movies assigned to this actor.
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

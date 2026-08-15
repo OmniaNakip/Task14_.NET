@@ -1,0 +1,154 @@
+@model IEnumerable<Movie_Management_System.Models.Movie>
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-1">Movies</h3>
+
+            <p class="text-muted mb-0">
+                Manage all movies
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+
+            <i class="fas fa-plus me-2"></i>
+            Add Movie
+
+        </a>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        @foreach (var movie in Model)
+        {
+            <div class="col-xl-4 col-md-6">
+
+                <div class="card h-100 shadow-sm border-0">
+
+                    @if (!string.IsNullOrEmpty(movie.MainImg))
+                    {
+                        <img src="@movie.MainImg"
+                             class="card-img-top"
+                             style="height:240px; object-fit:cover;"
+                             alt="@movie.Name" />
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center bg-light"
+                             style="height:240px;">
+
+                            <i class="fas fa-film fa-3x text-muted"></i>
+
+                        </div>
+                    }
+
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+
+                            <h5 class="fw-bold mb-0">
+                                @movie.Name
+                            </h5>
+
+                            <span class="badge bg-primary">
+                                @movie.Price
+                            </span>
+
+                        </div>
+
+
+                        <p class="text-muted small">
+
+                            @(movie.Description?.Length > 100
+                                ? movie.Description.Substring(0, 100) + "..."
+                                : movie.Description)
+
+                        </p>
+
+
+                        <div class="mb-2">
+
+                            <i class="fas fa-folder text-warning me-2"></i>
+
+                            @(movie.Category?.Name ?? "No Category")
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <i class="fas fa-building text-primary me-2"></i>
+
+                            @(movie.Cinema?.Name ?? "No Cinema")
+
+                        </div>
+
+
+                        <span class="badge
+                            @(movie.Status == "Available"
+                                  ? "bg-success"
+                                  : "bg-secondary")">
+
+                            @(movie.Status ?? "Unknown")
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-footer bg-white border-0">
+
+                        <div class="d-flex gap-2">
+
+                            <a asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-info flex-fill">
+
+                                <i class="fas fa-eye"></i>
+                                Details
+
+                            </a>
+
+
+                            <a asp-action="Edit"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-warning flex-fill">
+
+                                <i class="fas fa-edit"></i>
+                                Edit
+
+                            </a>
+
+
+                            <a asp-action="Delete"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-danger flex-fill">
+
+                                <i class="fas fa-trash"></i>
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

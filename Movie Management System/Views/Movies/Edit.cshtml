@@ -1,0 +1,225 @@
+@model Movie_Management_System.Models.Movie
+
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1">Edit Movie</h2>
+        <p class="text-muted mb-0">
+            Update movie information
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+
+        <div class="card-header bg-white border-0 p-4">
+            <h5 class="fw-bold mb-0">Movie Information</h5>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="Edit">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-semibold">
+                            Movie Name
+                        </label>
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter movie name" />
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Price" class="form-label fw-semibold">
+                            Price
+                        </label>
+                        <input asp-for="Price"
+                               class="form-control"
+                               placeholder="Enter price" />
+                        <span asp-validation-for="Price"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Status" class="form-label fw-semibold">
+                            Status
+                        </label>
+                        <input asp-for="Status"
+                               class="form-control"
+                               placeholder="Available / Not Available" />
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="DateTime" class="form-label fw-semibold">
+                            Date
+                        </label>
+                        <input asp-for="DateTime"
+                               type="datetime-local"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CategoryId"
+                               class="form-label fw-semibold">
+                            Category
+                        </label>
+
+                        <select asp-for="CategoryId"
+                                class="form-select">
+
+                            <option value="">Select Category</option>
+
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">
+                                    @category.Name
+                                </option>
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="CategoryId"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CinemaId"
+                               class="form-label fw-semibold">
+                            Cinema
+                        </label>
+
+                        <select asp-for="CinemaId"
+                                class="form-select">
+
+                            <option value="">Select Cinema</option>
+
+                            @foreach (var cinema in ViewBag.Cinemas)
+                            {
+                                <option value="@cinema.Id">
+                                    @cinema.Name
+                                </option>
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="CinemaId"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label class="form-label fw-semibold">
+                            Actors
+                        </label>
+
+                        <select name="actorIds"
+                                class="form-select"
+                                multiple
+                                size="5">
+
+                            @foreach (var actor in ViewBag.Actors)
+                            {
+                                bool selected = false;
+
+                                if (Model.Actors != null)
+                                {
+                                    selected = Model.Actors.Any(a => a.Id == actor.Id);
+                                }
+
+                                if (selected)
+                                {
+                                    <option value="@actor.Id" selected>
+                                        @actor.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@actor.Id">
+                                        @actor.Name
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <small class="text-muted">
+                            Hold Ctrl to select multiple actors.
+                        </small>
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="MainImg"
+                               class="form-label fw-semibold">
+                            Main Image
+                        </label>
+
+                        <input asp-for="MainImg"
+                               class="form-control"
+                               placeholder="Enter image URL" />
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="Description"
+                               class="form-label fw-semibold">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="5"
+                                  placeholder="Enter movie description"></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+
+                        <i class="fas fa-save me-2"></i>
+                        Save Changes
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-light px-4">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

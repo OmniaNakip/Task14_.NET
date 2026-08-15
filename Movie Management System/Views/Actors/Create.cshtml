@@ -1,0 +1,132 @@
+@model Movie_Management_System.Models.Actor
+
+@{
+    ViewData["Title"] = "Add Actor";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-1">Add Actor</h3>
+            <p class="text-muted mb-0">
+                Add a new actor to the system
+            </p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Back to Actors
+        </a>
+
+    </div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-7 col-lg-9">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white py-3">
+
+                    <h5 class="mb-0">
+                        Actor Information
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Create" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+
+                        <!-- Name -->
+
+                        <div class="mb-4">
+
+                            <label asp-for="Name"
+                                   class="form-label fw-semibold">
+                                Actor Name
+                            </label>
+
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="Enter actor name" />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Image -->
+
+                        <div class="mb-4">
+
+                            <label asp-for="Image"
+                                   class="form-label fw-semibold">
+                                Image URL
+                            </label>
+
+                            <input asp-for="Image"
+                                   class="form-control"
+                                   placeholder="Enter image URL" />
+
+                            <span asp-validation-for="Image"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a asp-action="Index"
+                               class="btn btn-light">
+
+                                Cancel
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="fas fa-save me-2"></i>
+
+                                Save Actor
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
