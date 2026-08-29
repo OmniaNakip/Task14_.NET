@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Movie_Management_System.ViewModels.DashboardViewModel
+@{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -392,14 +393,14 @@
      
 
         const categoryLabels = [
-        @foreach (var category in ViewBag.Categories)
+        @foreach (var category in Model.Categories)
         {
             <text>"@category.Name",</text>
         }
         ];
 
         const categoryData = [
-        @foreach (var category in ViewBag.Categories)
+        @foreach (var category in Model.Categories)
         {
             <text>@category.Movies.Count,</text>
         }
@@ -441,14 +442,14 @@
    
 
         const cinemaLabels = [
-        @foreach (var cinema in ViewBag.Cinemas)
+        @foreach (var cinema in Model.Cinemas)
         {
             <text>"@cinema.Name",</text>
         }
         ];
 
         const cinemaData = [
-        @foreach (var cinema in ViewBag.Cinemas)
+        @foreach (var cinema in Model.Cinemas)
         {
             <text>@cinema.Movies.Count,</text>
         }

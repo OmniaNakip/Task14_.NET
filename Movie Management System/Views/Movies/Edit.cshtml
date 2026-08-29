@@ -4,217 +4,215 @@
     ViewData["Title"] = "Edit Movie";
 }
 
-<div class="container-fluid py-4">
+<h1>Edit Movie</h1>
 
-    <div class="mb-4">
-        <h2 class="fw-bold mb-1">Edit Movie</h2>
-        <p class="text-muted mb-0">
-            Update movie information
-        </p>
-    </div>
+<hr />
 
-    <div class="card border-0 shadow-sm rounded-3">
+<div class="row">
+    <div class="col-md-6">
 
-        <div class="card-header bg-white border-0 p-4">
-            <h5 class="fw-bold mb-0">Movie Information</h5>
-        </div>
+        <form asp-action="Edit" method="post">
 
-        <div class="card-body p-4">
+            <input type="hidden" asp-for="Id" />
 
-            <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
 
-                <input type="hidden" asp-for="Id" />
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <label asp-for="Name"
+                       class="control-label"></label>
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3"></div>
+                <input asp-for="Name"
+                       class="form-control" />
 
-                <div class="row g-4">
+                <span asp-validation-for="Name"
+                      class="text-danger"></span>
+            </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="Name" class="form-label fw-semibold">
-                            Movie Name
-                        </label>
-                        <input asp-for="Name"
-                               class="form-control"
-                               placeholder="Enter movie name" />
-                        <span asp-validation-for="Name"
-                              class="text-danger"></span>
-                    </div>
+            <!-- Description -->
+            <div class="form-group mb-3">
+                <label asp-for="Description"
+                       class="control-label"></label>
 
-                    <div class="col-md-6">
-                        <label asp-for="Price" class="form-label fw-semibold">
-                            Price
-                        </label>
-                        <input asp-for="Price"
-                               class="form-control"
-                               placeholder="Enter price" />
-                        <span asp-validation-for="Price"
-                              class="text-danger"></span>
-                    </div>
+                <textarea asp-for="Description"
+                          class="form-control"></textarea>
 
-                    <div class="col-md-6">
-                        <label asp-for="Status" class="form-label fw-semibold">
-                            Status
-                        </label>
-                        <input asp-for="Status"
-                               class="form-control"
-                               placeholder="Available / Not Available" />
-                        <span asp-validation-for="Status"
-                              class="text-danger"></span>
-                    </div>
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="DateTime" class="form-label fw-semibold">
-                            Date
-                        </label>
-                        <input asp-for="DateTime"
-                               type="datetime-local"
-                               class="form-control" />
-                    </div>
+            <!-- Price -->
+            <div class="form-group mb-3">
+                <label asp-for="Price"
+                       class="control-label"></label>
 
-                    <div class="col-md-6">
+                <input asp-for="Price"
+                       type="number"
+                       step="0.01"
+                       class="form-control" />
 
-                        <label asp-for="CategoryId"
-                               class="form-label fw-semibold">
-                            Category
-                        </label>
+                <span asp-validation-for="Price"
+                      class="text-danger"></span>
+            </div>
 
-                        <select asp-for="CategoryId"
-                                class="form-select">
+            <!-- Status -->
+            <div class="form-group mb-3">
+                <label asp-for="Status"
+                       class="control-label"></label>
 
-                            <option value="">Select Category</option>
+                <select asp-for="Status"
+                        class="form-control">
 
-                            @foreach (var category in ViewBag.Categories)
-                            {
-                                <option value="@category.Id">
-                                    @category.Name
-                                </option>
-                            }
+                    <option value="">-- Select Status --</option>
+                    <option value="Coming Soon">Coming Soon</option>
+                    <option value="Available">Available</option>
+                    <option value="Expired">Expired</option>
 
-                        </select>
+                </select>
 
-                        <span asp-validation-for="CategoryId"
-                              class="text-danger"></span>
+                <span asp-validation-for="Status"
+                      class="text-danger"></span>
+            </div>
 
-                    </div>
+            <!-- Date -->
+            <div class="form-group mb-3">
+                <label asp-for="DateTime"
+                       class="control-label"></label>
 
-                    <div class="col-md-6">
+                <input asp-for="DateTime"
+                       type="datetime-local"
+                       class="form-control" />
 
-                        <label asp-for="CinemaId"
-                               class="form-label fw-semibold">
-                            Cinema
-                        </label>
+                <span asp-validation-for="DateTime"
+                      class="text-danger"></span>
+            </div>
 
-                        <select asp-for="CinemaId"
-                                class="form-select">
+            <!-- Main Image -->
+            <div class="form-group mb-3">
 
-                            <option value="">Select Cinema</option>
+                <label asp-for="MainImg"
+                       class="control-label"></label>
 
-                            @foreach (var cinema in ViewBag.Cinemas)
-                            {
-                                <option value="@cinema.Id">
-                                    @cinema.Name
-                                </option>
-                            }
+                <input asp-for="MainImg"
+                       class="form-control" />
 
-                        </select>
+                <span asp-validation-for="MainImg"
+                      class="text-danger"></span>
 
-                        <span asp-validation-for="CinemaId"
-                              class="text-danger"></span>
+            </div>
 
-                    </div>
+            <!-- Sub Images -->
+            <div class="form-group mb-3">
 
-                    <div class="col-12">
+                <label class="control-label">
+                    Sub Images
+                </label>
 
-                        <label class="form-label fw-semibold">
-                            Actors
-                        </label>
+                <input name="SubImages"
+                       class="form-control"
+                       placeholder="image1.jpg,image2.jpg" />
 
-                        <select name="actorIds"
-                                class="form-select"
-                                multiple
-                                size="5">
+            </div>
 
-                            @foreach (var actor in ViewBag.Actors)
-                            {
-                                bool selected = false;
+            <!-- Category -->
+            <div class="form-group mb-3">
 
-                                if (Model.Actors != null)
-                                {
-                                    selected = Model.Actors.Any(a => a.Id == actor.Id);
-                                }
+                <label class="control-label">
+                    Category
+                </label>
 
-                                if (selected)
-                                {
-                                    <option value="@actor.Id" selected>
-                                        @actor.Name
-                                    </option>
-                                }
-                                else
-                                {
-                                    <option value="@actor.Id">
-                                        @actor.Name
-                                    </option>
-                                }
-                            }
+                <select asp-for="CategoryId"
+                        class="form-control">
 
-                        </select>
+                    <option value="">
+                        -- Select Category --
+                    </option>
 
-                        <small class="text-muted">
-                            Hold Ctrl to select multiple actors.
-                        </small>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id">
+                            @category.Name
+                        </option>
+                    }
 
-                    </div>
+                </select>
 
-                    <div class="col-12">
+                <span asp-validation-for="CategoryId"
+                      class="text-danger"></span>
 
-                        <label asp-for="MainImg"
-                               class="form-label fw-semibold">
-                            Main Image
-                        </label>
+            </div>
 
-                        <input asp-for="MainImg"
-                               class="form-control"
-                               placeholder="Enter image URL" />
+            <!-- Cinema -->
+            <div class="form-group mb-3">
 
-                    </div>
+                <label class="control-label">
+                    Cinema
+                </label>
 
-                    <div class="col-12">
+                <select asp-for="CinemaId"
+                        class="form-control">
 
-                        <label asp-for="Description"
-                               class="form-label fw-semibold">
-                            Description
-                        </label>
+                    <option value="">
+                        -- Select Cinema --
+                    </option>
 
-                        <textarea asp-for="Description"
-                                  class="form-control"
-                                  rows="5"
-                                  placeholder="Enter movie description"></textarea>
+                    @foreach (var cinema in ViewBag.Cinemas)
+                    {
+                        <option value="@cinema.Id">
+                            @cinema.Name
+                        </option>
+                    }
 
-                    </div>
+                </select>
 
-                </div>
+                <span asp-validation-for="CinemaId"
+                      class="text-danger"></span>
 
-                <div class="mt-4 d-flex gap-2">
+            </div>
 
-                    <button type="submit"
-                            class="btn btn-primary px-4">
+            <!-- Actors -->
+            <div class="form-group mb-3">
 
-                        <i class="fas fa-save me-2"></i>
-                        Save Changes
+                <label class="control-label">
+                    Actors
+                </label>
 
-                    </button>
+                <select name="actorIds"
+                        class="form-control"
+                        multiple>
 
-                    <a asp-action="Index"
-                       class="btn btn-light px-4">
-                        Cancel
-                    </a>
+                    @foreach (var actor in ViewBag.Actors)
+                    {
+                        <option value="@actor.Id">
+                            @actor.Name
+                        </option>
+                    }
 
-                </div>
+                </select>
 
-            </form>
+                <small class="text-muted">
+                    Hold Ctrl to select multiple actors.
+                </small>
 
-        </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-group mt-4">
+
+                <input type="submit"
+                       value="Save"
+                       class="btn btn-primary" />
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Back to List
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 </div>
 

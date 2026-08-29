@@ -1,144 +1,110 @@
-
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Movie_Management_System.Models;
-using Movie_Management_System.Data;
+using Movie_Management_System.Services.Interfaces;
 
-public class CategoriesController : Controller
+namespace Movie_Management_System.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public CategoriesController(ApplicationDbContext context)
+    public class CategoriesController : Controller
     {
-        _context = context;
-    }
+        private readonly ICategoryService _service;
 
-    public async Task<IActionResult> Index()
-    {
-        var categories = await _context.Categories
-            .Include(c => c.Movies)
-            .ToListAsync();
-
-        return View(categories);
-    }
-
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        public CategoriesController(ICategoryService service)
         {
-            return NotFound();
+            _service = service;
         }
 
-        var category = await _context.Categories
-            .Include(c => c.Movies)
-            .FirstOrDefaultAsync(c => c.Id == id);
-
-        if (category == null)
+        public async Task<IActionResult> Index()
         {
-            return NotFound();
+            return View(await _service.GetAllAsync());
         }
 
-        return View(category);
-    }
-
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Name,Movies")] Category category)
-    {
-        if (ModelState.IsValid)
+        public async Task<IActionResult> Details(int? id)
         {
-            _context.Add(category);
-            await _context.SaveChangesAsync();
+            if (id == null)
+                return NotFound();
+
+            var category =
+                await _service.GetByIdAsync(id.Value);
+
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                await _service.CreateAsync(category);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(category);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var category =
+                await _service.GetByIdAsync(id.Value);
+
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(
+            int id,
+            Category category)
+        {
+            if (id != category.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                await _service.UpdateAsync(category);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(category);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var category =
+                await _service.GetByIdAsync(id.Value);
+
+            if (category == null)
+                return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _service.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
-        return View(category);
-    }
-
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var category = await _context.Categories.FindAsync(id);
-        if (category == null)
-        {
-            return NotFound();
-        }
-        return View(category);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Movies")] Category category)
-    {
-        if (id != category.Id)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(category);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(category.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        return View(category);
-    }
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var category = await _context.Categories
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        return View(category);
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var category = await _context.Categories.FindAsync(id);
-        if (category != null)
-        {
-            _context.Categories.Remove(category);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool CategoryExists(int? id)
-    {
-        return _context.Categories.Any(e => e.Id == id);
     }
 }

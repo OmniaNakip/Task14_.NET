@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Movie_Management_System.Data;
+using Movie_Management_System.Repositories.Implementations;
+using Movie_Management_System.Repositories.Interfaces;
+using Movie_Management_System.Services.Implementations;
+using Movie_Management_System.Services.Interfaces;
 
 namespace Movie_Management_System
 {
@@ -11,6 +15,19 @@ namespace Movie_Management_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            builder.Services.AddScoped<IActorRepository, ActorRepository>();
+            builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            builder.Services.AddScoped<IMovieService, MovieService>();
+            builder.Services.AddScoped<IActorService, ActorService>();
+            builder.Services.AddScoped<ICinemaService, CinemaService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+            builder.Services.AddScoped<IImageService, ImageService>();
+
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
