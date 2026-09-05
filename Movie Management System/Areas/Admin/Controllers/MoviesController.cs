@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Movie_Management_System.Models;
 using Movie_Management_System.Services.Interfaces;
 
-namespace Movie_Management_System.Controllers
+namespace Movie_Management_System.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+
     public class MoviesController : Controller
     {
         private readonly IMovieService _movieService;

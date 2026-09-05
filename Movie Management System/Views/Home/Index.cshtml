@@ -3,6 +3,39 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<div class="d-flex justify-content-end align-items-center p-3">
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <span class="me-3">
+            Welcome, @User.Identity.Name
+        </span>
+
+        <form asp-controller="Account"
+              asp-action="Logout"
+              method="post">
+            <button type="submit" class="btn btn-danger">
+                Logout
+            </button>
+        </form>
+    }
+    else
+    {
+        <a asp-controller="Account"
+           asp-action="Login"
+           class="btn btn-outline-dark me-2">
+            Login
+        </a>
+
+        <a asp-controller="Account"
+           asp-action="Register"
+           class="btn btn-primary">
+            Create Account
+        </a>
+    }
+
+</div>
+
 <div class="container-fluid">
 
     <!-- Page Header -->
